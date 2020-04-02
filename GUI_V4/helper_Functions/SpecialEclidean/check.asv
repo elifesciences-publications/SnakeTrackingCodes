@@ -1,0 +1,45 @@
+% quarternion tests for understanding
+v = rand(3,1)*100;
+[n1,n2] = size(v);
+for n = 1:n2
+vp(:,n) =  rotation([pi/4 pi/3 0])*v(:,n);
+end
+Vp = mean(vp,2) - mean(v,2);
+q = [1 1 1];
+
+count = 0;
+while true
+    count = count  +1;
+w = 0;
+x = q(1);
+y = q(2);
+z = q(3); 
+
+Q = [w^2+x^2-y^2-z^2 , 2*(x*y-w*z), 2*(x*z-w*y), 0 ; ...
+     2*(x*y+w*z) , w^2-x^2+y^2-z^2 , 2*(y*z-w*x), 0 ; ...
+     2*(x*z+w*y),2*(y*z+w*x), w^2-x^2-y^2+z^2 ,   0 ; ...
+      0,0,0, w^2+x^2+y^2+z^2];
+for n = 1:n2  
+r((4*n-3:4*n),count) = [vp(:,n)- Vp;1]  - Q*[v(:,n);1] ;
+J((4*n-3:4*n),:) = 2*[ [x, -y, z]*v(:,n), [-y, -x, -w]*v(:,n), [-z, w, x]*v(:,n);...
+         [y, -x, -w]*v(:,n), [x, y, z]*v(:,n), [w, -z, y]*v(:,n) ;...
+         [z,w,-x]*v(:,n), [w,z,-y]*v(:,n), [x,y,z]*v(:,n); ... 
+         x, y, z];
+
+end
+
+
+delta = (J'*J)^-1*J'*r(:,count);
+
+q = q+delta';
+if  count ==100
+break;
+end
+
+end
+
+ plot(1:size(r,2),r)
+r
+q
+Q
+clear

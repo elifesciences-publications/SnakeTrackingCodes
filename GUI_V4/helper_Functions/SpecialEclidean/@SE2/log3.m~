@@ -1,0 +1,29 @@
+%================================== log ==================================
+%
+%  function xi = log(g, tau)
+%
+%  Take the logarithm of the group element g.  If the time period of
+%  the action is not given, it is assumed to be unity.
+%
+%================================== log ==================================
+function xi = log3(g, tau)
+
+if ( (nargin < 2) || isempty(tau) )
+  tau = 1;
+end
+
+xi = zeros([6 1]);			% Specify size/dimensions of xi.
+
+%--(1) Obtain the angular velocity.
+WN = (1/tau)*acos((trace(g.R)-1)/2);
+omega = WN/(2*sin(WN*tau))*(g.R-g.R');  
+if omega ~= 0
+%--(2) Compute the linear velocity.
+v= (WN^2)*((eye(3)-g.R)*
+else
+    v=g.d/tau;
+end
+xi=[v;omega];
+end
+%
+%================================== log ==================================

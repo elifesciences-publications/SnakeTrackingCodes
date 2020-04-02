@@ -1,0 +1,25 @@
+%================================== log ==================================
+%
+%  function xi = log(g, tau)
+%
+%  Take the logarithm of the group element g.  If the time period of
+%  the action is not given, it is assumed to be unity.
+%
+%================================== log ==================================
+function xi = log(g, tau)
+
+if ( (nargin < 2) || isempty(tau) )
+  tau = 1;
+end
+R=[g(1,1) g(2,1) g(3,1) ; g(2,1) g(2,2) g(2,3); g(3,1) g(3,2) g(3,3) ];
+%--(1) First do the log of the rotation matrix.
+absw=1/tau*acos((trace(R)-1)/2);
+what=(absw/(2*sin(absw*tau)))*(R-R.');
+w=[what(); what(); what()]
+%--(2) Second, use both hat omega and omega to get the velocity.
+
+%--(3) Concatenate the two vector elements to make one se2 Lie algebra element.
+
+end
+%
+%================================== log ==================================
